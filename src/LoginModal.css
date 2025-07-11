@@ -1,0 +1,32 @@
+/* Blurred full-screen background */
+.modal-blur-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(6px);
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1040;
+}
+
+/* Modal animation (fade-in + scale) */
+.animate-modal {
+  animation: popupScale 0.5s ease-out;
+}
+
+@keyframes popupScale {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Ensure modal sits above the blur */
+.login-modal {
+  z-index: 1050;
+}
