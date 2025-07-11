@@ -11,11 +11,13 @@ const MyListings = () => {
   useEffect(() => {
     const fetchListings = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:5000/api/my-listing/${userId}`);
+        const apiBaseUrl = process.env.REACT_APP_BASE_URL;
+        const { data } = await axios.get(`${apiBaseUrl}/my-listing/${userId}`);
         setListings(data);
       } catch (err) {
         console.error("Failed to fetch listings:", err);
         alert("Error fetching your listings. Please try again.");
+        console.log(`${process.env.REACT_APP_BASE_URL}`)
       }
     };
 

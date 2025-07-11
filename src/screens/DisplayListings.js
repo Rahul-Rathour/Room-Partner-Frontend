@@ -26,7 +26,7 @@ const DisplayListings = () => {
   useEffect(() => {
     const fetchListings = async () => {
       try {
-        const response = await axios.post('http://localhost:5000/api/listings');
+        const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/listings`);
         setListings(response.data);
         setFilteredListings(response.data); // initially show all
       } catch (error) {
@@ -40,7 +40,7 @@ const DisplayListings = () => {
   useEffect(() => {
     const fetchMyListing = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:5000/api/my-listing/${userId}`);
+        const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/my-listing/${userId}`);
         setHasListing(data.length > 0);
       } catch (err) {
         console.error("Error fetching user listings:", err);

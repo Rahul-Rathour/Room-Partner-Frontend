@@ -20,7 +20,7 @@ const Home = () => {
   useEffect(() => {
     const fetchMyListing = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:5000/api/my-listing/${userId}`);
+        const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/my-listing/${userId}`);
         setHasListing(data.length > 0);
       } catch (err) {
         console.error("Error fetching user listings:", err);
@@ -37,7 +37,7 @@ const Home = () => {
   const handleSearch = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`http://localhost:5000/api/listings/location?search=${search}`);
+      const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/listings/location?search=${search}`);
       setListings(res.data.slice(0, 10));
     } catch (err) {
       console.error("Search failed:", err);

@@ -20,7 +20,7 @@ const UpdateProfile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:5000/api/my-listing/${userId}`); 
+        const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/my-listing/${userId}`); 
         setProfile(data);
       } catch (err) {
         console.error("Profile fetch error:", err);
@@ -62,7 +62,7 @@ const UpdateProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:5000/api/update-listing/${userId}`, profile);
+      await axios.put(`${process.env.REACT_APP_BASE_URL}/update-listing/${userId}`, profile);
       alert("Profile updated successfully!");
     } catch (err) {
       console.error("Update failed:", err);

@@ -35,7 +35,7 @@ const AddUser = () => {
 
       const userId = localStorage.getItem('userId');
       // Send data to backend
-      await axios.post('http://localhost:5000/api/partner/create-listing', {
+      await axios.post(`${process.env.REACT_APP_BASE_URL}/partner/create-listing`, {
         name: name,
         location: location,
         phone: phone,
