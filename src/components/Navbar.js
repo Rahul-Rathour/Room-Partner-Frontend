@@ -44,7 +44,7 @@ const Navbar = () => {
                 className="nav-link fs-5 text-white px-3 py-2 hover:text-primary hover:bg-gray-700 rounded"
                 to="/"
               >
-                Homee
+                Home
               </Link>
             </li>
           </ul>
