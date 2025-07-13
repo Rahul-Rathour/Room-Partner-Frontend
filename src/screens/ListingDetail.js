@@ -6,62 +6,55 @@ const ListingDetail = () => {
   const listing = state;
 
   if (!listing) {
-    return <p className="p-6">No listing found.</p>;
+    return <p className="p-6 text-center text-gray-600">No listing found.</p>;
   }
 
   return (
-    <div className="container my-5">
-      <div className="card border-0 shadow-lg rounded-4 overflow-hidden d-flex align-items-center">
-        <h1 className="card-title fw-bold mb-3 text-light d-flex align-items-center">
-            <i className="bi bi-house-door-fill text-primary me-2"></i> Hii I'm {listing.name}
-          </h1>
+    <div className="max-w-5xl mx-auto px-4 py-10 " style={{paddingTop:'6rem'}}>
+      <div className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col lg:flex-row">
         {/* Image Section */}
-        <div className="w-50 bg-light text-center">
+        <div className="lg:w-1/2 bg-gray-100 flex items-center justify-center p-4">
           <img
             src={listing.imageUrl || "https://via.placeholder.com/1200x600"}
             alt={listing.name}
-            className="img-fluid w-100"
-            style={{
-              maxHeight: 'auto',
-              objectFit: 'contain', // Ensures full image fits without cropping
-            }}
+            className="w-full max-h-[400px] object-contain rounded-md"
           />
         </div>
 
         {/* Content Section */}
-        <div className="card-body p-4">
-          {/* <h1 className="card-title fw-bold mb-3 text-dark d-flex align-items-center">
-            <i className="bi bi-house-door-fill text-primary me-2"></i> {listing.name}
-          </h1> */}
+        <div className="lg:w-1/2 p-6 space-y-4">
+          <h1 className="text-2xl font-bold text-gray-800 flex items-center">
+            <i className="bi bi-house-door-fill text-blue-500 mr-2"></i>
+            Hi, I'm {listing.name}
+          </h1>
 
-          <p className="text-muted mb-2 d-flex align-items-center">
-            <i className="bi bi-geo-alt-fill text-danger me-2"></i>
-            <strong>Location:</strong>&nbsp;{listing.location}
+          <p className="text-gray-600 flex items-center">
+            <i className="bi bi-geo-alt-fill text-red-500 mr-2"></i>
+            <span><strong>Location:</strong> {listing.location}</span>
           </p>
 
-          <p className="text-muted mb-2 d-flex align-items-center">
-            <i className="bi bi-currency-rupee text-success me-2"></i>
-            <strong>Total Rent:</strong>&nbsp;₹{listing.price}
+          <p className="text-gray-600 flex items-center">
+            <i className="bi bi-currency-rupee text-green-600 mr-2"></i>
+            <span><strong>Total Rent:</strong> ₹{listing.price}</span>
           </p>
 
-          <p className="text-muted mb-2 d-flex align-items-center">
-            <i className="bi bi-calendar-event-fill text-warning me-2"></i>
-            <strong>Listed On:</strong>&nbsp;{new Date(listing.createdAt).toLocaleString()}
+          <p className="text-gray-600 flex items-center">
+            <i className="bi bi-calendar-event-fill text-yellow-500 mr-2"></i>
+            <span><strong>Listed On:</strong> {new Date(listing.createdAt).toLocaleString()}</span>
           </p>
 
-          <p className="text-muted mb-2 d-flex align-items-center">
-            <i className="bi bi-telephone-fill text-info me-2"></i>
-            <strong>Phone:</strong>&nbsp;{listing.phone}
+          <p className="text-gray-600 flex items-center">
+            <i className="bi bi-telephone-fill text-blue-400 mr-2"></i>
+            <span><strong>Phone:</strong> {listing.phone}</span>
           </p>
 
-          <p className="text-muted d-flex align-items-center">
-            <i className="bi bi-envelope-fill text-secondary me-2"></i>
-            <strong>Email:</strong>&nbsp;{listing.email}
+          <p className="text-gray-600 flex items-center">
+            <i className="bi bi-envelope-fill text-gray-500 mr-2"></i>
+            <span><strong>Email:</strong> {listing.email}</span>
           </p>
         </div>
       </div>
     </div>
-
   );
 };
 

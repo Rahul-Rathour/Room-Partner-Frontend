@@ -1,7 +1,4 @@
 import './App.css';
-import '../node_modules/bootstrap-dark-5/dist/css/bootstrap-dark.min.css'
-import '../node_modules/bootstrap/dist/js/bootstrap.bundle'
-import '../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'
 import Signup from '../src/screens/Signup'
 import Login from '../src/screens/Login'
 import Home from './screens/Home';
@@ -13,6 +10,8 @@ import MyListings from './pages/MyListings.js';
 import UpdateProfile from './pages/UpdateProfile.js';
 import Navbar from './components/Navbar.js';
 import Footer from './components/Footer.js';
+import PrivacyPolicy from './pages/PrivacyPolicy.jsx';
+import ContactUs from './pages/ContactUs.jsx';
 
 function App() {
   return (
@@ -29,6 +28,8 @@ function App() {
           <Route path='/add-listing' element={<AddUser />} />
           <Route path="/my-listings" element={<MyListings/>} />
           <Route path="/update-profile" element={<UpdateProfile />} />
+          <Route path='/privacy-policy' element={<PrivacyPolicy/>}/>
+          <Route path='/contact' element={<ContactUs/>}/>
         </Routes>
       </div>
       <Footer/>

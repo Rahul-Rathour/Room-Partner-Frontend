@@ -3,29 +3,32 @@ import axios from 'axios';
 import StatusModal from '../components/StatusModal';
 
 const AddUser = () => {
+  const [loading, setLoading] = useState(false);
+
   const [image, setImage] = useState(null);
   const [url, setUrl] = useState('');
   const [name, setName] = useState('');
   const [location, setLocation] = useState('');
   const [price, setPrice] = useState('');
   const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState('');
   const [modal, setModal] = useState({ show: false, type: '', message: '' });
 
   const handleUpload = async () => {
     try {
+      setLoading(true); // start loader
+
       if (!image || !name || !location || !price || !phone || !email) {
         setModal({ show: true, type: 'error', message: 'Please fill all fields and select an image' });
+        setLoading(false); // stop loader
         return;
       }
 
-      // Upload image to Cloudinary
       const ImageData = new FormData();
       ImageData.append('file', image);
       ImageData.append('upload_preset', 'r_partner');
       ImageData.append('cloud_name', 'deweyrf8v');
 
-      // Save image on Cloudinary
       const { data } = await axios.post(
         'https://api.cloudinary.com/v1_1/deweyrf8v/image/upload',
         ImageData
@@ -34,154 +37,130 @@ const AddUser = () => {
       setUrl(data.secure_url);
 
       const userId = localStorage.getItem('userId');
-      // Send data to backend
+
       await axios.post(`${process.env.REACT_APP_BASE_URL}/partner/create-listing`, {
-        name: name,
-        location: location,
-        phone: phone,
-        price: price,
+        name,
+        location,
+        phone,
+        price,
         imageUrl: data.secure_url,
-        email: email,
-        userId: userId
+        email,
+        userId
       });
 
       setModal({ show: true, type: 'success', message: 'Room partner registered successfully!' });
+
       setTimeout(() => {
         setModal({ ...modal, show: false });
         setName('');
         setLocation('');
         setPrice('');
         setPhone('');
+        setEmail('');
         setImage(null);
         setUrl('');
       }, 2000);
     } catch (err) {
       console.error(err);
       setModal({ show: true, type: 'error', message: 'Something went wrong. Please try again later.' });
+    } finally {
+      setLoading(false); // stop loader
     }
   };
 
+
   return (
     <div
-      className="container d-flex justify-content-center align-items-center min-vh-100 px-2"
+      className="min-h-screen flex items-center justify-center px-4 py-8 pt-20 bg-gradient-to-br from-[#2c2d35] via-[#4d4d5d] to-[#1f1f2b] animate-gradient"
       style={{
-        background: 'linear-gradient(135deg, rgba(60, 61, 70, 0.8), rgba(168, 148, 158, 0.8), rgba(31, 35, 43, 0.8))',
-        backgroundSize: '200% 200%',
+        backgroundSize: '300% 300%',
         animation: 'gradientShift 15s ease infinite',
       }}
     >
-      <div
-        className="card p-3 p-sm-4 p-md-5 w-100"
-        style={{
-          maxWidth: '500px',
-          borderRadius: '15px',
-          background: 'rgba(255, 255, 255, 0.1)',
-          backdropFilter: 'blur(10px)',
-          border: '1px solid rgba(255, 255, 255, 0.2)',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
-        }}
-      >
-        <h2 className="text-center fw-bold mb-4 text-white" style={{ fontSize: 'clamp(1.5rem, 5vw, 1.8rem)' }}>
-          Room Partner Registration
+      <div className="w-full max-w-xl p-8 rounded-3xl shadow-2xl bg-white bg-opacity-5 backdrop-blur-lg border border-white border-opacity-20 transition-all duration-300">
+        <h2 className="text-center text-3xl font-semibold text-white mb-8 tracking-wide">
+          Register a Room Partner
         </h2>
-        <form>
-          <div className="mb-3">
-            <label htmlFor="name" className="form-label fw-medium text-white">Name</label>
-            <input
-              type="text"
-              className="form-control rounded-pill py-2 py-sm-3 shadow-sm"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-              placeholder="Enter your name"
-              style={{ border: 'none', backgroundColor: 'rgba(255, 255, 255, 0.2)', color: 'white' }}
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="location" className="form-label fw-medium text-white">Location</label>
-            <input
-              type="text"
-              className="form-control rounded-pill py-2 py-sm-3 shadow-sm"
-              id="location"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              required
-              placeholder="Enter location"
-              style={{ border: 'none', backgroundColor: 'rgba(255, 255, 255, 0.2)', color: 'white' }}
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="phone" className="form-label fw-medium text-white">Phone</label>
-            <input
-              type="tel"
-              className="form-control rounded-pill py-2 py-sm-3 shadow-sm"
-              id="phone"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              required
-              placeholder="Enter phone number"
-              style={{ border: 'none', backgroundColor: 'rgba(255, 255, 255, 0.2)', color: 'white' }}
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="email" className="form-label fw-medium text-white">Email</label>
-            <input
-              type="email"
-              className="form-control rounded-pill py-2 py-sm-3 shadow-sm"
-              id="phone"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              placeholder="Enter mail address"
-              style={{ border: 'none', backgroundColor: 'rgba(255, 255, 255, 0.2)', color: 'white' }}
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="price" className="form-label fw-medium text-white">Room Price (you'll pay)</label>
-            <input
-              type="number"
-              className="form-control rounded-pill py-2 py-sm-3 shadow-sm"
-              id="price"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              required
-              placeholder="Enter room price"
-              style={{ border: 'none', backgroundColor: 'rgba(255, 255, 255, 0.2)', color: 'white' }}
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="image" className="form-label fw-medium text-white">Upload Image</label>
+
+        <form className="space-y-5">
+          {[
+            { id: 'name', label: 'Name', type: 'text', state: name, setter: setName },
+            { id: 'location', label: 'Full Room Address', type: 'text', state: location, setter: setLocation },
+            { id: 'phone', label: 'Phone Number', type: 'tel', state: phone, setter: setPhone },
+            { id: 'email', label: 'Email Address', type: 'email', state: email, setter: setEmail },
+            { id: 'price', label: "Room Price (you'll pay)", type: 'number', state: price, setter: setPrice }
+          ].map((field) => (
+            <div key={field.id}>
+              <label htmlFor={field.id} className="block text-white mb-1 font-medium">
+                {field.label}
+              </label>
+              <input
+                type={field.type}
+                id={field.id}
+                value={field.state}
+                onChange={(e) => field.setter(e.target.value)}
+                placeholder={`Enter ${field.label.toLowerCase()}`}
+                className="w-full px-4 py-2 rounded-lg bg-white bg-opacity-10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
+              />
+            </div>
+          ))}
+
+          <div>
+            <label htmlFor="image" className="block text-white mb-1 font-medium">Upload Room Image</label>
             <input
               type="file"
-              className="form-control rounded-pill py-2 py-sm-3 shadow-sm"
               id="image"
-              onChange={(e) => setImage(e.target.files[0])}
               accept="image/*"
-              style={{ border: 'none', backgroundColor: 'rgba(255, 255, 255, 0.2)', color: 'white' }}
+              onChange={(e) => setImage(e.target.files[0])}
+              className="w-full px-4 py-2 rounded-lg bg-white bg-opacity-10 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
             />
           </div>
-          <div className="d-flex flex-column flex-sm-row justify-content-center align-items-center gap-3">
-            <button
-              type="button"
-              onClick={handleUpload}
-              className="btn btn-primary rounded-pill px-4 py-2 shadow-sm transition-transform duration-200 hover:scale-105 w-100 w-sm-auto"
-            >
-              Submit
-            </button>
-          </div>
+
+          <button
+            type="button"
+            onClick={handleUpload}
+            disabled={loading}
+            className={`w-full mt-4 py-2 rounded-lg text-white font-semibold transition-all duration-300 ${loading
+                ? 'bg-gray-500 cursor-not-allowed'
+                : 'bg-blue-600 hover:bg-blue-700 shadow-md'
+              }`}
+          >
+            {loading ? (
+              <span className="flex items-center justify-center space-x-2">
+                <svg
+                  className="animate-spin h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                  ></path>
+                </svg>
+                <span>Submitting...</span>
+              </span>
+            ) : (
+              'Submit'
+            )}
+          </button>
         </form>
 
-        {url && (
-          <div className="mt-4 text-center">
-            <h3 className="font-semibold text-white">Uploaded Image:</h3>
-            <img
-              src={url}
-              alt="Uploaded"
-              className="w-full max-w-xs mx-auto mt-2 rounded-lg shadow-sm"
-            />
+        {/* {url && (
+          <div className="mt-6 text-center">
+            <h3 className="text-white font-semibold mb-2">Uploaded Image:</h3>
+            <img src={url} alt="Uploaded" className="mx-auto max-w-xs rounded-xl shadow-md border border-white border-opacity-10" />
           </div>
-        )}
+        )} */}
 
         <StatusModal
           show={modal.show}
@@ -192,6 +171,7 @@ const AddUser = () => {
       </div>
     </div>
   );
+
 };
 
 export default AddUser;

@@ -1,0 +1,77 @@
+/* StatusModal.css */
+
+.status-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999; /* High z-index to overlay everything */
+  background-color: rgba(0, 0, 0, 0.4); /* Dim background */
+  backdrop-filter: blur(6px); /* Blur effect */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.status-modal-box {
+  background: rgba(30, 30, 30, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 2rem;
+  color: white;
+  width: 90%;
+  max-width: 360px;
+  text-align: center;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.modal-message {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.modal-button {
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-success {
+  background-color: #22c55e;
+  color: white;
+}
+
+.btn-danger {
+  background-color: #ef4444;
+  color: white;
+}
+
+.text-success {
+  color: #22c55e;
+}
+
+.text-danger {
+  color: #ef4444;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

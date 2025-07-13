@@ -1,122 +1,137 @@
 import React, { useState } from 'react';
+import axios from "axios";
 import { Link, useNavigate } from 'react-router-dom';
 import StatusModal from '../components/StatusModal';
 
 const Login = () => {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const [modal, setModal] = useState({ show: false, type: '', message: '' });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Start loading
+
     try {
-      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/loginuser`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email: credentials.email,
-          password: credentials.password
-        })
-      });
- 
-      const data = await response.json();
+      const { data } = await axios.post(`${process.env.REACT_APP_BASE_URL}/loginuser`, credentials);
+
+      console.log("Login response:", data);
 
       if (data.success && data.authToken) {
         localStorage.setItem("authToken", data.authToken);
         localStorage.setItem("userId", data.userId);
         setCredentials({ email: "", password: "" });
+
         setModal({ show: true, type: "success", message: "Login successful!" });
+
         setTimeout(() => {
-          setModal({ ...modal, show: false });
+          setModal({ show: false, type: '', message: '' });
           navigate("/listings");
         }, 2000);
       } else {
-        setModal({ show: true, type: "error", message: "Invalid credentials. Please try again." });
+        setModal({
+          show: true,
+          type: "error",
+          message: "Invalid credentials. Please try again."
+        });
+
+        setTimeout(() => {
+          setModal({ show: false, type: '', message: '' });
+        }, 2000);
       }
     } catch (error) {
       console.error(error);
-      setModal({ show: true, type: "error", message: "Server error. Please try again later." });
+      setModal({
+        show: true,
+        type: "error",
+        message: "Server error. Please try again later."
+      });
+
+      setTimeout(() => {
+        setModal({ show: false, type: '', message: '' });
+      }, 3000);
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
-  const change = (e) => {
+
+  const handleChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
 
   return (
-    <div
-      className="container d-flex justify-content-center align-items-center min-vh-100 px-2"
-    >
-      <div
-        className="card p-3 p-sm-4 p-md-5 w-100"
-        style={{
-          maxWidth: '500px',
-          border:'1px solid red',
-          borderRadius: '15px',
-          background: 'rgba(255, 255, 255, 0.1)',
-          backdropFilter: 'blur(10px)',
-          border: '1px solid rgba(0, 255, 136, 0.76)',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)'
-        }}
-      >
-        <h2 className="text-center fw-bold mb-4 text-white" style={{ fontSize: 'clamp(1.5rem, 5vw, 1.8rem)' }}>
-          <span className='text-success'>Login to</span> Room-partner
-        </h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="email" className="form-label fw-medium text-white">Email address</label>
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 px-4">
+      <div className="w-full max-w-md bg-white/10 backdrop-blur-md border border-green-400/70 shadow-xl rounded-xl p-6 sm:p-8">
+        <h2 className="text-2xl sm:text-3xl text-center font-bold text-white mb-6">
+          <span className="text-green-400">Login to</span> Room-partner
+        </h2> 
+        {loading && (
+          <div className="mb-4 text-center">
+            <div className="inline-block w-8 h-8 border-4 border-green-400 border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-white mt-2">Logging in...</p>
+          </div>
+        )}
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Email Field */}
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-white mb-1">
+              Email address
+            </label>
             <input
               type="email"
-              className="form-control rounded-pill py-2 py-sm-3 shadow-sm"
               id="email"
               name="email"
               value={credentials.email}
-              onChange={change}
+              onChange={handleChange}
               required
               placeholder="Enter your email"
-              style={{ border: 'none', backgroundColor: 'rgba(255, 255, 255, 0.2)', color: 'white' }}
+              className="w-full rounded-full px-4 py-2 bg-white/20 text-white placeholder-white/70 border-none shadow-inner focus:ring-2 focus:ring-green-400 focus:outline-none"
             />
-            <div id="emailHelp" className="form-text text-white-50 mt-2">We'll never share your email.</div>
+            <p className="text-xs text-white/60 mt-1">We'll never share your email.</p>
           </div>
 
-          <div className="mb-4">
-            <label htmlFor="password" className="form-label fw-medium text-white">Password</label>
+          {/* Password Field */}
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-white mb-1">
+              Password
+            </label>
             <input
               type="password"
-              className="form-control rounded-pill py-2 py-sm-3 shadow-sm"
               id="password"
               name="password"
               value={credentials.password}
-              onChange={change}
+              onChange={handleChange}
               required
               placeholder="Enter your password"
-              style={{ border: 'none', backgroundColor: 'rgba(255, 255, 255, 0.2)', color: 'white' }}
+              className="w-full rounded-full px-4 py-2 bg-white/20 text-white placeholder-white/70 border-none shadow-inner focus:ring-2 focus:ring-green-400 focus:outline-none"
             />
           </div>
 
-          <div className="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3">
+          {/* Buttons */}
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-4">
             <button
               type="submit"
-              className="btn btn-primary rounded-pill px-4 py-2 shadow-sm transition-transform duration-200 hover:scale-105 w-100 w-sm-auto"
+              className="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-2 rounded-full shadow-md transform transition duration-200 hover:scale-105"
             >
               Login
             </button>
             <Link
               to="/createuser"
-              className="btn btn-outline-success rounded-pill px-4 py-2 shadow-sm transition-transform duration-200 hover:scale-105 w-100 w-sm-auto"
+              className="w-full sm:w-auto border border-green-400 text-green-400 hover:bg-green-400 hover:text-white font-semibold px-6 py-2 rounded-full shadow-md transform transition duration-200 hover:scale-105 text-center"
             >
               I'm a new user
             </Link>
           </div>
         </form>
 
+        {/* Status Modal */}
         <StatusModal
           show={modal.show}
           type={modal.type}
           message={modal.message}
-          onClose={() => setModal({ ...modal, show: false })}
+          onClose={() => setModal({ show: false, type: '', message: '' })}
         />
       </div>
     </div>
