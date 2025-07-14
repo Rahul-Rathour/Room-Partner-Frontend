@@ -12,12 +12,14 @@ import Navbar from './components/Navbar.js';
 import Footer from './components/Footer.js';
 import PrivacyPolicy from './pages/PrivacyPolicy.jsx';
 import ContactUs from './pages/ContactUs.jsx';
+import RequestOtp from './pages/RequestOtp.js';
+import ResetPassword from './pages/ResetPassword.js';
 
 function App() {
   return (
     <BrowserRouter>
-    {/* Navbar on all pages */}
-        <Navbar />
+      {/* Navbar on all pages */}
+      <Navbar />
       <div className="flex-grow">
         <Routes>
           <Route path='/' element={<Home />} />
@@ -26,13 +28,15 @@ function App() {
           <Route path='/listings' element={<DisplayListings />} />
           <Route path='/listing/:id' element={<ListingDetail />} />
           <Route path='/add-listing' element={<AddUser />} />
-          <Route path="/my-listings" element={<MyListings/>} />
+          <Route path="/my-listings" element={<MyListings />} />
           <Route path="/update-profile" element={<UpdateProfile />} />
-          <Route path='/privacy-policy' element={<PrivacyPolicy/>}/>
-          <Route path='/contact' element={<ContactUs/>}/>
+          <Route path='/privacy-policy' element={<PrivacyPolicy />} />
+          <Route path='/contact' element={<ContactUs />} />
+          <Route path="/request-otp" element={<RequestOtp/>} />
+          <Route path="/reset-password" element={<ResetPassword />} />
         </Routes>
       </div>
-      <Footer/>
+      <Footer />
     </BrowserRouter>
   );
 }

@@ -21,7 +21,7 @@ const AddUser = () => {
       if (!image || !name || !location || !price || !phone || !email) {
         setModal({ show: true, type: 'error', message: 'Please fill all fields and select an image' });
         setLoading(false); // stop loader
-        return;
+        return; 
       }
 
       const ImageData = new FormData();
@@ -39,13 +39,13 @@ const AddUser = () => {
       const userId = localStorage.getItem('userId');
 
       await axios.post(`${process.env.REACT_APP_BASE_URL}/partner/create-listing`, {
-        name,
-        location,
-        phone,
-        price,
+        name:name,
+        location:location,
+        phone:phone,
+        price:price,
         imageUrl: data.secure_url,
-        email,
-        userId
+        email:email,
+        userId:userId
       });
 
       setModal({ show: true, type: 'success', message: 'Room partner registered successfully!' });

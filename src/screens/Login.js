@@ -66,7 +66,7 @@ const Login = () => {
       <div className="w-full max-w-md bg-white/10 backdrop-blur-md border border-green-400/70 shadow-xl rounded-xl p-6 sm:p-8">
         <h2 className="text-2xl sm:text-3xl text-center font-bold text-white mb-6">
           <span className="text-green-400">Login to</span> Room-partner
-        </h2> 
+        </h2>
         {loading && (
           <div className="mb-4 text-center">
             <div className="inline-block w-8 h-8 border-4 border-green-400 border-t-transparent rounded-full animate-spin"></div>
@@ -110,20 +110,36 @@ const Login = () => {
           </div>
 
           {/* Buttons */}
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-4">
-            <button
-              type="submit"
-              className="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-2 rounded-full shadow-md transform transition duration-200 hover:scale-105"
-            >
-              Login
-            </button>
-            <Link
-              to="/createuser"
-              className="w-full sm:w-auto border border-green-400 text-green-400 hover:bg-green-400 hover:text-white font-semibold px-6 py-2 rounded-full shadow-md transform transition duration-200 hover:scale-105 text-center"
-            >
-              I'm a new user
-            </Link>
+          <div className="mt-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                <button
+                  type="submit"
+                  className="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-2 rounded-full shadow-md transform transition duration-200 hover:scale-105 text-center"
+                >
+                  Login
+                </button>
+
+                <Link
+                  to="/createuser"
+                  className="w-full sm:w-auto border border-green-400 text-green-400 hover:bg-green-400 hover:text-white font-semibold px-6 py-2 rounded-full shadow-md transform transition duration-200 hover:scale-105 text-center"
+                >
+                  I'm a new user
+                </Link>
+              </div>
+
+              <div className="sm:ml-auto text-center sm:text-right w-full sm:w-auto">
+                <Link
+                  to="/request-otp"
+                  className="text-sm text-blue-400 hover:underline"
+                >
+                  Forgot password?
+                </Link>
+              </div>
+            </div>
           </div>
+
+
         </form>
 
         {/* Status Modal */}

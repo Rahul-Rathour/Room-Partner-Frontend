@@ -13,7 +13,7 @@ const MyListings = () => {
     const fetchListings = async () => {
       try {
         const apiBaseUrl = process.env.REACT_APP_BASE_URL;
-        const { data } = await axios.get(`${apiBaseUrl}/my-listing/${userId}`);
+        const { data } = await axios.get(`${apiBaseUrl}/my-listing/${userId}`); 
         setListings(data);
         // console.log(data);
       } catch (err) {
