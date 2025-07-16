@@ -42,16 +42,22 @@ const Login = () => {
       }
     } catch (error) {
       console.error(error);
+
+      const message =
+        error.response?.data?.message ||
+        "Server error. Please try again later.";
+
       setModal({
         show: true,
         type: "error",
-        message: "Server error. Please try again later."
+        message: message
       });
 
       setTimeout(() => {
         setModal({ show: false, type: '', message: '' });
       }, 3000);
-    } finally {
+    }
+    finally {
       setLoading(false); // Stop loading
     }
   };
