@@ -76,7 +76,7 @@ return (
             <div className="flex items-center gap-2">
               <input
                 type="search"
-                placeholder="Noida, Bareilly..."
+                placeholder="Noida, Bareilly...."
                 className="w-full py-3 px-5 rounded-full bg-white/95 text-gray-800 focus:outline-none shadow"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
